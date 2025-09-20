@@ -2,6 +2,7 @@ add_library(scanner_lib SHARED
     md5_file_hasher.cpp
     csv_hash_database.cpp
     file_logger.cpp
+    thread_pool.cpp
 )
 
 set_target_properties(scanner_lib PROPERTIES
