@@ -27,6 +27,7 @@ protected:
   void TearDown() override {
     std::error_code ec;
     std::filesystem::remove_all(temp_dir_, ec);
+    (void)ec;
   }
 
   std::filesystem::path temp_dir_;

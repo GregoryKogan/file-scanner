@@ -10,9 +10,16 @@
 #include "scanner/interfaces.h"
 
 namespace {
-struct Args;
+
+struct Args {
+  std::filesystem::path scan_path;
+  std::filesystem::path base_path;
+  std::filesystem::path log_path;
+};
+
 void PrintUsage();
 Args ParseArgs(int argc, char* argv[]);
+
 }  // namespace
 
 int main(int argc, char* argv[]) {
@@ -43,12 +50,6 @@ int main(int argc, char* argv[]) {
 }
 
 namespace {
-
-struct Args {
-  std::filesystem::path scan_path;
-  std::filesystem::path base_path;
-  std::filesystem::path log_path;
-};
 
 void PrintUsage() {
   std::cout
