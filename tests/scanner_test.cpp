@@ -88,8 +88,8 @@ TEST_F(ScannerTest, FindsAndLogsMaliciousFiles) {
               LogDetection(temp_dir_ / "bad_file.exe", "bad_hash", "EvilWare"))
       .Times(1);
 
-  ScannerConfig config{mock_db_, mock_logger_, mock_hasher_, 2};
-  auto scanner = CreateScanner(config);
+  auto scanner =
+      std::make_unique<Scanner>(mock_db_, mock_logger_, mock_hasher_, 2);
   const ScanResult result = scanner->Scan(temp_dir_);
 
   EXPECT_EQ(result.total_files_processed, 2);
@@ -112,8 +112,8 @@ TEST_F(ScannerTest, HandlesHashingErrorsGracefully) {
   EXPECT_CALL(mock_logger_, LogDetection(testing::_, testing::_, testing::_))
       .Times(0);
 
-  ScannerConfig config{mock_db_, mock_logger_, mock_hasher_, 2};
-  auto scanner = CreateScanner(config);
+  auto scanner =
+      std::make_unique<Scanner>(mock_db_, mock_logger_, mock_hasher_, 2);
   const ScanResult result = scanner->Scan(temp_dir_);
 
   EXPECT_EQ(result.total_files_processed, 2);
@@ -127,8 +127,8 @@ TEST_F(ScannerTest, HandlesEmptyDirectory) {
   EXPECT_CALL(mock_logger_, LogDetection(testing::_, testing::_, testing::_))
       .Times(0);
 
-  ScannerConfig config{mock_db_, mock_logger_, mock_hasher_, 2};
-  auto scanner = CreateScanner(config);
+  auto scanner =
+      std::make_unique<Scanner>(mock_db_, mock_logger_, mock_hasher_, 2);
   const ScanResult result = scanner->Scan(temp_dir_);
 
   EXPECT_EQ(result.total_files_processed, 0);
@@ -158,8 +158,8 @@ TEST_F(ScannerTest, HandlesDeeplyNestedDirectories) {
   EXPECT_CALL(mock_logger_, LogDetection(testing::_, testing::_, testing::_))
       .Times(0);
 
-  ScannerConfig config{mock_db_, mock_logger_, mock_hasher_, 4};
-  auto scanner = CreateScanner(config);
+  auto scanner =
+      std::make_unique<Scanner>(mock_db_, mock_logger_, mock_hasher_, 4);
   const ScanResult result = scanner->Scan(temp_dir_);
 
   EXPECT_EQ(result.total_files_processed, 4);
