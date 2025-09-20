@@ -14,11 +14,8 @@ namespace scanner {
 /**
  * @interface IFileHasher
  * @brief Defines the contract for a component that can hash a file's content.
- *
- * This abstraction allows the core scanning logic to be independent of the
- * specific hashing algorithm used (e.g., MD5, SHA256).
  */
-class IFileHasher {
+class SCANNER_API IFileHasher {
 public:
   virtual ~IFileHasher() = default;
 
@@ -80,20 +77,6 @@ public:
 };
 
 /**
- * @struct ScannerConfig
- * @brief Configuration structure for creating a scanner instance.
- *
- * This struct holds references to all the necessary dependencies (database,
- * logger, hasher) required by the scanner.
- */
-struct SCANNER_API ScannerConfig {
-  IHashDatabase& db;
-  ILogger& logger;
-  IFileHasher& hasher;
-  std::size_t num_threads = 0;  // 0 means default to hardware_concurrency
-};
-
-/**
  * @interface IScanner
  * @brief Defines the primary contract for the file scanning engine.
  */
@@ -115,15 +98,52 @@ public:
 };
 
 /**
- * @brief Factory function to create a scanner instance.
- *
- * This is the sole entry point for creating a scanner.
- *
- * @param config The configuration containing all necessary dependencies.
- * @return A unique pointer to an IScanner instance.
+ * @class IScannerBuilder
+ * @brief An interface for a builder that constructs a configured IScanner.
  */
-SCANNER_API std::unique_ptr<IScanner> CreateScanner(
-    const ScannerConfig& config);
+class SCANNER_API IScannerBuilder {
+public:
+  virtual ~IScannerBuilder() = default;
+
+  /**
+   * @brief Configures the scanner to use an MD5 file hasher.
+   * @return A reference to this builder for chaining.
+   */
+  virtual IScannerBuilder& WithMd5Hasher() = 0;
+
+  /**
+   * @brief Configures the hash database from a CSV file.
+   * @param path The path to the CSV file.
+   * @return A reference to this builder for chaining.
+   */
+  virtual IScannerBuilder& WithCsvDatabase(
+      const std::filesystem::path& path) = 0;
+
+  /**
+   * @brief Configures the logger to write to a file.
+   * @param path The path to the log file.
+   * @return A reference to this builder for chaining.
+   */
+  virtual IScannerBuilder& WithFileLogger(
+      const std::filesystem::path& path) = 0;
+
+  /**
+   * @brief Sets the number of threads for the scanner.
+   * @param num_threads The number of threads to use.
+   * @return A reference to this builder for chaining.
+   */
+  virtual IScannerBuilder& WithThreads(std::size_t num_threads) = 0;
+
+  /**
+   * @brief Builds the final IScanner instance.
+   * @return A unique pointer to the configured IScanner.
+   * @throws std::runtime_error if dependencies are missing or fail to load.
+   */
+  virtual std::unique_ptr<IScanner> Build() = 0;
+};
+
+/** @brief Factory function to create a scanner builder instance. */
+SCANNER_API std::unique_ptr<IScannerBuilder> CreateScannerBuilder();
 
 }  // namespace scanner
 

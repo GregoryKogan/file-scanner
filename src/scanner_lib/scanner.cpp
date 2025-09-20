@@ -12,15 +12,9 @@
 
 namespace scanner {
 
-std::unique_ptr<IScanner> CreateScanner(const ScannerConfig& config) {
-  return std::make_unique<Scanner>(config);
-}
-
-Scanner::Scanner(const ScannerConfig& config)
-    : db_(config.db),
-      logger_(config.logger),
-      hasher_(config.hasher),
-      num_threads_(config.num_threads) {
+Scanner::Scanner(IHashDatabase& db, ILogger& logger, IFileHasher& hasher,
+                 std::size_t num_threads)
+    : db_(db), logger_(logger), hasher_(hasher), num_threads_(num_threads) {
 }
 
 void Scanner::ConsumerTask(const std::filesystem::path& path) {
