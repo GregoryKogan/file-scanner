@@ -16,6 +16,9 @@ add_executable(scanner_tests
 
     csv_hash_database_test.cpp
     ../src/scanner_lib/csv_hash_database.cpp
+
+    file_logger_test.cpp
+    ../src/scanner_lib/file_logger.cpp
 )
 
 target_include_directories(scanner_tests PRIVATE
