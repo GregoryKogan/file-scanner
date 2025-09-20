@@ -69,6 +69,6 @@ target_include_directories(integration_tests PRIVATE
     "${PROJECT_SOURCE_DIR}"
 )
 
-add_test(NAME integration_tests COMMAND integration_tests)
+add_test(NAME integration_tests COMMAND $<TARGET_FILE:integration_tests>)
 
 add_dependencies(integration_tests scanner)
