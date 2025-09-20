@@ -4,18 +4,12 @@
 #include <chrono>
 #include <cstdint>
 
+#include <iostream>
 #include <string>
 
-namespace scanner {
+#include "scanner/visibility.h"
 
-/**
- * @struct MaliciousSignature
- * @brief Represents a single malicious signature, mapping a hash to a verdict.
- */
-struct MaliciousSignature {
-  std::string hash;
-  std::string verdict;
-};
+namespace scanner {
 
 /**
  * @struct ScanResult
@@ -27,6 +21,15 @@ struct ScanResult {
   std::uint64_t errors = 0;
   std::chrono::milliseconds execution_time{0};
 };
+
+/**
+ * @brief Overload for streaming a ScanResult to an output stream.
+ * @param os The output stream (e.g., std::cout).
+ * @param result The ScanResult to print.
+ * @return A reference to the output stream.
+ */
+SCANNER_API std::ostream& operator<<(std::ostream& os,
+                                     const ScanResult& result);
 
 }  // namespace scanner
 
