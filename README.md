@@ -3,6 +3,7 @@
 [![C++ CI](https://github.com/GregoryKogan/file-scanner/actions/workflows/ci.yml/badge.svg)](https://github.com/GregoryKogan/file-scanner/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgist.githubusercontent.com%2FGregoryKogan%2F923bd3f3a429d54421ddb17eb8e99852%2Fraw%2Ffile-scanner-coverage.json&query=message&label=coverage&logo=c%2B%2B&color=green)](https://gist.github.com/GregoryKogan/923bd3f3a429d54421ddb17eb8e99852)
 [![Docs](https://img.shields.io/badge/Docs-latest-blue.svg)](https://GregoryKogan.github.io/file-scanner/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A high-performance, multithreaded command-line utility for scanning files against a database of malicious MD5 hashes.
 

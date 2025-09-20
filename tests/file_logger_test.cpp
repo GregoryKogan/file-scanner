@@ -71,7 +71,7 @@ TEST_F(FileLoggerTest, HandlesConcurrentWritesWithoutCorruption) {
     threads.reserve(kNumThreads);
 
     for (int i = 0; i < kNumThreads; ++i) {
-      threads.emplace_back([&logger, i]() {
+      threads.emplace_back([&logger, i, kLogsPerThread]() {
         for (int j = 0; j < kLogsPerThread; ++j) {
           const std::string path =
               "file_" + std::to_string(i) + "_" + std::to_string(j);
