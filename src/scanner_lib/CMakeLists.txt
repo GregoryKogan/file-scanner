@@ -3,6 +3,7 @@ add_library(scanner_lib SHARED
     csv_hash_database.cpp
     file_logger.cpp
     thread_pool.cpp
+    scanner.cpp
 )
 
 set_target_properties(scanner_lib PROPERTIES
