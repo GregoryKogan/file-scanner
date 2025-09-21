@@ -77,6 +77,7 @@ TEST_F(CsvHashDatabaseTest, ClearsPreviousDataOnLoad) {
 TEST_F(CsvHashDatabaseTest, SkipsMalformedLines) {
   const std::string content =
       "a;Verdict1\n"        // Valid
+      "\n"                  // Blank
       "b;\n"                // Malformed (empty verdict)
       ";Verdict2\n"         // Malformed (empty hash)
       "c;Verdict3;Extra\n"  // Malformed (too many parts)

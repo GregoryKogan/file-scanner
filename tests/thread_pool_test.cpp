@@ -88,5 +88,13 @@ TEST(ThreadPoolTest, ThrowsWhenEnqueueingAfterStop) {
   EXPECT_THROW(pool.Enqueue([]() {}), std::runtime_error);
 }
 
+TEST(ThreadPoolTest, DefaultConstruction) {
+  EXPECT_NO_THROW({
+    ThreadPool pool;
+    auto fut = pool.Enqueue([] { return 42; });
+    EXPECT_EQ(fut.get(), 42);
+  });
+}
+
 }  // namespace
 }  // namespace scanner

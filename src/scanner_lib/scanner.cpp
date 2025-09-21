@@ -76,7 +76,7 @@ ScanResult Scanner::Scan(const std::filesystem::path& scan_path) {
     try {
       producer_future.get();
     } catch (const std::exception&) {
-      // Error is already logged.
+      errors_++;
     }
   }
 
