@@ -13,6 +13,9 @@ FetchContent_MakeAvailable(googletest)
 add_executable(scanner_tests
     md5_file_hasher_test.cpp
     ../src/scanner_lib/md5_file_hasher.cpp
+
+    csv_hash_database_test.cpp
+    ../src/scanner_lib/csv_hash_database.cpp
 )
 
 target_include_directories(scanner_tests PRIVATE
