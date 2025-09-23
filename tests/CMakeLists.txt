@@ -11,7 +11,12 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(scanner_tests
-    # Add test source files here later
+    md5_file_hasher_test.cpp
+    ../src/scanner_lib/md5_file_hasher.cpp
+)
+
+target_include_directories(scanner_tests PRIVATE
+    "${PROJECT_SOURCE_DIR}"
 )
 
 target_link_libraries(scanner_tests PRIVATE

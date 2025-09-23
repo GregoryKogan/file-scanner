@@ -7,8 +7,11 @@ set_target_properties(scanner_lib PROPERTIES
     DEFINE_SYMBOL SCANNER_LIB_EXPORT
 )
 
-target_include_directories(scanner_lib PUBLIC
-    "${PROJECT_SOURCE_DIR}/include"
+target_include_directories(scanner_lib
+    PUBLIC
+        "${PROJECT_SOURCE_DIR}/include"
+    PRIVATE
+        "${PROJECT_SOURCE_DIR}"
 )
 
 target_link_libraries(scanner_lib PUBLIC md5_lib)
