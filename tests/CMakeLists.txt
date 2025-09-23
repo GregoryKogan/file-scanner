@@ -19,6 +19,9 @@ add_executable(scanner_tests
 
     file_logger_test.cpp
     ../src/scanner_lib/file_logger.cpp
+
+    thread_pool_test.cpp
+    ../src/scanner_lib/thread_pool.cpp
 )
 
 target_include_directories(scanner_tests PRIVATE
