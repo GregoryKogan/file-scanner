@@ -57,7 +57,29 @@ public:
       const std::string& hash) const = 0;
 };
 
-// Other interfaces for ILogger and IScanner will be added here later.
+/**
+ * @interface ILogger
+ * @brief Defines the contract for a component that logs malicious detections.
+ *
+ * Implementations of this interface must be thread-safe, as multiple scanning
+ * threads may report detections concurrently.
+ */
+class SCANNER_API ILogger {
+public:
+  virtual ~ILogger() = default;
+
+  /**
+   * @brief Logs the detection of a malicious file.
+   * @param path The path to the detected file.
+   * @param hash The calculated hash of the file.
+   * @param verdict The verdict from the hash database.
+   */
+  virtual void LogDetection(const std::filesystem::path& path,
+                            const std::string& hash,
+                            const std::string& verdict) = 0;
+};
+
+// Interface for IScanner will be added here later.
 
 }  // namespace scanner
 
