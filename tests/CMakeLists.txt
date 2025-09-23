@@ -22,6 +22,9 @@ add_executable(scanner_tests
 
     thread_pool_test.cpp
     ../src/scanner_lib/thread_pool.cpp
+
+    scanner_test.cpp
+    ../src/scanner_lib/scanner.cpp
 )
 
 target_include_directories(scanner_tests PRIVATE
@@ -31,7 +34,12 @@ target_include_directories(scanner_tests PRIVATE
 target_link_libraries(scanner_tests PRIVATE
     scanner_lib
     GTest::gtest_main
+    GTest::gmock
 )
+
+# On POSIX systems it is required to link against the threads library.
+find_package(Threads REQUIRED)
+target_link_libraries(scanner_tests PRIVATE Threads::Threads)
 
 include(GoogleTest)
 gtest_discover_tests(scanner_tests)

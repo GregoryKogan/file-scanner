@@ -79,7 +79,51 @@ public:
                             const std::string& verdict) = 0;
 };
 
-// Interface for IScanner will be added here later.
+/**
+ * @struct ScannerConfig
+ * @brief Configuration structure for creating a scanner instance.
+ *
+ * This struct holds references to all the necessary dependencies (database,
+ * logger, hasher) required by the scanner.
+ */
+struct SCANNER_API ScannerConfig {
+  IHashDatabase& db;
+  ILogger& logger;
+  IFileHasher& hasher;
+  std::size_t num_threads = 0;  // 0 means default to hardware_concurrency
+};
+
+/**
+ * @interface IScanner
+ * @brief Defines the primary contract for the file scanning engine.
+ */
+class SCANNER_API IScanner {
+public:
+  virtual ~IScanner() = default;
+
+  /**
+   * @brief Recursively scans a directory for malicious files.
+   *
+   * This method orchestrates the entire scanning process, utilizing multiple
+   * threads to hash files and check them against the database.
+   *
+   * @param scan_path The root directory to begin the scan from.
+   * @return A ScanResult struct containing the statistics of the completed
+   * scan.
+   */
+  virtual ScanResult Scan(const std::filesystem::path& scan_path) = 0;
+};
+
+/**
+ * @brief Factory function to create a scanner instance.
+ *
+ * This is the sole entry point for creating a scanner.
+ *
+ * @param config The configuration containing all necessary dependencies.
+ * @return A unique pointer to an IScanner instance.
+ */
+SCANNER_API std::unique_ptr<IScanner> CreateScanner(
+    const ScannerConfig& config);
 
 }  // namespace scanner
 
