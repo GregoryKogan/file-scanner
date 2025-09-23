@@ -22,10 +22,14 @@ namespace scanner {
 class Scanner final : public IScanner {
 public:
   /**
-   * @brief Constructs a Scanner instance.
-   * @param config The configuration containing dependencies.
+   * @brief Constructs a Scanner instance with its dependencies.
+   * @param db A reference to a hash database implementation.
+   * @param logger A reference to a logger implementation.
+   * @param hasher A reference to a file hasher implementation.
+   * @param num_threads The number of worker threads to use for scanning.
    */
-  explicit Scanner(const ScannerConfig& config);
+  explicit Scanner(IHashDatabase& db, ILogger& logger, IFileHasher& hasher,
+                   std::size_t num_threads);
 
   /**
    * @brief Scans the specified directory.

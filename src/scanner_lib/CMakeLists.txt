@@ -4,6 +4,8 @@ add_library(scanner_lib SHARED
     file_logger.cpp
     thread_pool.cpp
     scanner.cpp
+    scanner_builder.cpp
+    domain.cpp
 )
 
 set_target_properties(scanner_lib PROPERTIES
