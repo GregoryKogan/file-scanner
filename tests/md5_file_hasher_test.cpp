@@ -28,6 +28,7 @@ protected:
   static void TearDownTestSuite() {
     std::error_code ec;
     std::filesystem::remove_all(temp_dir_, ec);
+    (void)ec;
   }
 
   static std::filesystem::path temp_dir_;
