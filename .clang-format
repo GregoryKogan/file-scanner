@@ -1,0 +1,19 @@
+---
+BasedOnStyle: Google
+IndentWidth: 2
+AccessModifierOffset: -2
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+ColumnLimit: 80
+IncludeCategories:
+  - Regex:           '^<c[a-z].*>'
+    Priority:        2
+  - Regex:           '^<[a-zA-Z0-9_]+>$'
+    Priority:        3
+  - Regex:           '^<.*>'
+    Priority:        4
+  - Regex:           '^\".*\"$'
+    Priority:        5
+SortIncludes:    true

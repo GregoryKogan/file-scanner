@@ -1,0 +1,2 @@
+add_subdirectory(scanner_lib)
+add_subdirectory(scanner_cli)
