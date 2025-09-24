@@ -7,7 +7,9 @@
 
 A high-performance, multithreaded command-line utility for scanning files against a database of malicious MD5 hashes.
 
-This project is a demonstration of modern C++ software engineering principles, designed to be robust, scalable, and maintainable. It is built with a clean, decoupled architecture to ensure high cohesion, low coupling, and excellent testability.
+This project is a demonstration of modern C++ software engineering principles, designed to be robust, scalable, and maintainable. It is built with a clean, decoupled architecture to ensure high cohesion, low coupling, and excellent testability.  
+
+> Made for the [Kaspersky SafeBoard](safeboard.kaspersky.ru) internship.
 
 ## Features
 
