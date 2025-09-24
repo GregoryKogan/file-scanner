@@ -18,6 +18,7 @@ FetchContent_Declare(
   GIT_TAG        v1.1.0
 )
 FetchContent_MakeAvailable(md5-lib)
+set_target_properties(md5_lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 enable_testing()
 
