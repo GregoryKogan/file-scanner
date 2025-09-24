@@ -28,6 +28,9 @@ add_executable(scanner_tests
 
     scanner_test.cpp
     ../src/scanner_lib/scanner.cpp
+
+    scanner_builder_test.cpp
+    ../src/scanner_lib/scanner_builder.cpp
 )
 
 target_include_directories(scanner_tests PRIVATE

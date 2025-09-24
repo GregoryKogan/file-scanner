@@ -168,5 +168,21 @@ TEST_F(ScannerTest, HandlesDeeplyNestedDirectories) {
   EXPECT_EQ(result.errors, 0);
 }
 
+TEST_F(ScannerTest, HandlesInvalidScanPath) {
+  const auto invalid_path = temp_dir_ / "not_a_directory.txt";
+  CreateDummyFile("not_a_directory.txt");
+  ASSERT_TRUE(std::filesystem::is_regular_file(invalid_path));
+
+  EXPECT_CALL(mock_hasher_, HashFile(testing::_)).Times(0);
+  EXPECT_CALL(mock_db_, FindHash(testing::_)).Times(0);
+  EXPECT_CALL(mock_logger_, LogDetection(testing::_, testing::_, testing::_))
+      .Times(0);
+
+  Scanner scanner(mock_db_, mock_logger_, mock_hasher_, 2);
+  const ScanResult result = scanner.Scan(invalid_path);
+
+  EXPECT_GE(result.errors, 1);
+}
+
 }  // namespace
 }  // namespace scanner
