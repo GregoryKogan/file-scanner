@@ -1,0 +1,115 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  coverage:
+    needs: build_and_test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install gcovr
+        run: sudo apt-get update && sudo apt-get install -y gcovr
+
+      - name: Configure CMake for Coverage
+        run: >
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_CXX_FLAGS="--coverage -fprofile-abs-path"
+          -DCMAKE_EXE_LINKER_FLAGS="--coverage"
+          -DCMAKE_SHARED_LINKER_FLAGS="--coverage"
+
+      - name: Build with Coverage
+        run: cmake --build build
+
+      - name: Run Tests to Generate Coverage Data
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Generate Coverage Report
+        run: >
+          gcovr --xml-pretty -o coverage.xml
+          --filter "src/scanner_lib/.*"
+          --exclude "src/scanner_cli/.*"
+          build
+
+      - name: Extract Coverage Percentage
+        id: extract_coverage
+        run: |
+          PERCENTAGE=$(gcovr --filter "src/scanner_lib/.*" --exclude "src/scanner_cli/.*" build | grep '^TOTAL' | awk '{print $NF}')
+          echo "percentage=${PERCENTAGE}" >> $GITHUB_OUTPUT
+
+      - name: Create Coverage Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 923bd3f3a429d54421ddb17eb8e99852
+          filename: file-scanner-coverage.json
+          label: Coverage
+          message: ${{ steps.extract_coverage.outputs.percentage }}
+          color: green
+          namedLogo: C++
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  deploy-docs:
+    needs: build_and_test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: Generate Doxygen Documentation
+        run: doxygen Doxyfile
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload documentation artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/html/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
