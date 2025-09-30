@@ -25,12 +25,14 @@ This project is a demonstration of modern C++ software engineering principles, d
 
 The scanner is designed for high throughput on modern hardware. Benchmarks were conducted on a machine equipped with an Apple M1 Pro (8 performance cores).
 
-The benchmark consists of scanning a directory containing **100,000 files** (1KB to 128KB each) with a total size of approximately 6.2 GB.
+The benchmark consists of scanning a directory containing **100,000 files** (1KB to 128KB each) with a total size of approximately 6.5 GB.
 
 | Metric                 | Result                |
 | ---------------------- | --------------------- |
-| **Total Execution Time** | **~19.5 seconds**     |
-| **Throughput**         | **~5,100 files/second** |
+| **Total Execution Time** | **~19.1 seconds**     |
+| **Throughput**         | **~5200 files/second** |
+
+> ~750 files/second for the single threaded version (7x slower)
 
 During the scan, the utility successfully utilizes all available CPU cores, demonstrating the efficiency of the multithreaded architecture.
 
